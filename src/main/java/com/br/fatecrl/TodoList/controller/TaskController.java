@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -17,5 +19,16 @@ public class TaskController {
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
         TaskDTO createdTaskDTO = taskService.createTask(taskDTO);
         return ResponseEntity.ok(createdTaskDTO);
+    }
+
+    @GetMapping
+    public List<TaskDTO> getAllTasks() {
+        return taskService.getAllTasks();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskDTO> getTaskById(@PathVariable Long id) {
+        TaskDTO taskDTO = taskService.getTaskById(id);
+        return taskDTO != null ? ResponseEntity.ok(taskDTO) : ResponseEntity.notFound().build();
     }
 }
